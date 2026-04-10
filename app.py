@@ -53,18 +53,27 @@ def home():
 @app.route('/predict', methods=['POST'])
 def predict():
     try:
+        print("Request received")
+
         if 'image' not in request.files:
+            print("No image found")
             return jsonify({"error": "No image uploaded"}), 400
 
         image_file = request.files['image']
+        print("Image received")
+
         image = Image.open(image_file).convert('RGB')
         image = transform(image).unsqueeze(0)
+
+        print("Image processed")
 
         with torch.no_grad():
             outputs = model(image)
             probs = torch.nn.functional.softmax(outputs[0], dim=0)
             confidence, predicted = torch.max(probs, 0)
             result = labels[predicted.item()]
+
+        print("Prediction done:", result)
 
         return jsonify({
             "infection": result,
@@ -73,4 +82,5 @@ def predict():
         })
 
     except Exception as e:
+        print("ERROR:", str(e))
         return jsonify({"error": str(e)}), 500
