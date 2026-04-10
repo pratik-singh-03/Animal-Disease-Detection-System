@@ -1,95 +1,96 @@
-# AI-Based Animal Disease Detection System Version 0.1
+# Animal Disease Detection System
 
 ## Overview
 
-This project is an AI-powered system that detects animal skin diseases using image classification. It analyzes uploaded images and predicts whether the animal is affected by a specific disease or is healthy.
+This project is a web-based application designed to detect common animal skin conditions through image input. Users can upload an image, and the system analyzes it to identify possible issues and provide basic information.
 
-The system is designed to assist in early detection and provide basic insights for quick action.
+The application is built to assist in early awareness and help users understand potential animal health problems.
 
 ---
 
 ## Problem Statement
 
-Animals often suffer from skin diseases such as infections, allergies, and parasites. Many pet owners and farmers:
+Animals often suffer from skin-related diseases such as infections, allergies, and parasitic conditions. In many situations:
 
-* Cannot identify diseases early
-* Lack access to immediate veterinary support
-* Ignore symptoms until they become severe
+* Early symptoms are difficult to identify
+* Immediate veterinary help is not always available
+* Lack of awareness leads to delayed treatment
 
-This leads to delayed treatment and increased risk to animal health.
+This creates a need for a simple and accessible system that can assist users in identifying possible health issues.
 
 ---
 
 ## Solution
 
-This system uses Deep Learning to:
+The current system:
 
-* Analyze animal images
-* Detect patterns related to skin diseases
-* Classify conditions such as infections, allergies, or healthy skin
-* Provide prediction confidence and disease information
-
----
-
-## Features
-
-* Image-based disease detection
-* Confidence score for predictions
-* Supports multiple disease classes
-* Simple and user-friendly web interface (Flask)
-* Fast and real-time prediction
-* Scalable for future healthcare modules
+* Accepts animal images as input
+* Processes the image using a trained model
+* Identifies possible conditions
+* Displays the result with confidence and basic description
 
 ---
 
-## Technologies Used
+## Current Status
 
-* Python
-* PyTorch – Deep Learning model
-* Torchvision – Image transformations
-* Flask – Web application
-* Pillow (PIL) – Image processing
+This version focuses on core functionality and basic disease detection.
+
+Future updates will enhance the system into a fully AI-powered platform with advanced features such as:
+
+* Improved detection accuracy
+* First aid and emergency guidance
+* Nearby veterinary hospital locator
+* Appointment booking system
+* Doctor-recommended temporary treatment suggestions
+* Mobile-friendly and scalable architecture
+
+---
+
+## Vision
+
+The long-term goal is to build a complete animal healthcare support system that not only detects diseases but also assists users with treatment, emergency handling, and access to veterinary services.
 
 ---
 
 ## Project Structure
 
 ```
-ANIMALPROJECT/
+Animalproject/
 │
-├── app.py                      # Flask backend
-├── animal_disease_weights.pt   # Trained model (not included)
+├── app.py                      # Main Flask application
 ├── train_model.py              # Model training script
-├── requirements.txt
-├── README.md
-├── .gitignore
+├── animal_disease_weights.pt   # Trained model (not included in repository)
+├── requirements.txt            # Project dependencies
+├── README.md                   # Documentation
+├── LICENSE                     # Apache 2.0 License
+├── .gitignore                  # Ignored files
 │
 ├── templates/
-│   └── index.html              # Frontend UI
+│   └── index.html              # Frontend interface
 │
-├── static/                     # CSS, JS, Images
+├── static/                     # CSS, JavaScript, Images
 │
-└── data/ (optional future use)
+└── data/                       # Reserved for future datasets
 ```
 
 ---
 
 ## How to Run
 
-### 1. Clone the repository
+### 1. Clone the Repository
 
 ```
 git clone https://github.com/pratik-singh-03/Animalproject.git
 cd Animalproject
 ```
 
-### 2. Install dependencies
+### 2. Install Dependencies
 
 ```
 pip install -r requirements.txt
 ```
 
-### 3. Add model file
+### 3. Add the Model File
 
 Place the trained model file in the root directory:
 
@@ -97,13 +98,15 @@ Place the trained model file in the root directory:
 animal_disease_weights.pt
 ```
 
-### 4. Run the application
+Note: The model file is not included in the repository due to size limitations.
+
+### 4. Run the Application
 
 ```
 python app.py
 ```
 
-### 5. Open in browser
+### 5. Open in Browser
 
 ```
 http://127.0.0.1:5000/
@@ -111,17 +114,9 @@ http://127.0.0.1:5000/
 
 ---
 
-## Future Enhancements
+## Notes
 
-* First Aid module for emergency animal care
-* Common medicines recommendation system
-* Veterinary hospital locator integration
-* Mobile-friendly UI
-* Real-time AI-based treatment suggestions
-* Multi-page dashboard interface
-
----
-
-## Author
-
-Pratik Singh
+* Python 3.8 or above is recommended
+* Model file must be present for predictions to work
+* The application runs locally without internet dependency
+* Future updates will include advanced modules and integrations

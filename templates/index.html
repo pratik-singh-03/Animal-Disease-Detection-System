@@ -2,173 +2,50 @@
 <html>
 <head>
     <title>Animal Disease Detection</title>
-
-    <style>
-        body {
-            background: #0f172a;
-            color: white;
-            font-family: Arial;
-            text-align: center;
-            padding: 40px;
-        }
-
-        .container {
-            max-width: 420px;
-            margin: auto;
-            background: #1e293b;
-            padding: 25px;
-            border-radius: 15px;
-        }
-
-        .drop-zone {
-            border: 2px dashed #38bdf8;
-            padding: 20px;
-            border-radius: 10px;
-            cursor: pointer;
-        }
-
-        img {
-            width: 100%;
-            margin-top: 15px;
-            display: none;
-            border-radius: 10px;
-        }
-
-        button {
-            margin-top: 15px;
-            padding: 10px;
-            background: #3b82f6;
-            border: none;
-            border-radius: 8px;
-            color: white;
-        }
-
-        .result-card {
-            margin-top: 20px;
-            display: none;
-            background: #020617;
-            padding: 15px;
-            border-radius: 10px;
-            text-align: left;
-        }
-
-        .progress-bar {
-            height: 10px;
-            background: #334155;
-            border-radius: 5px;
-        }
-
-        .progress {
-            height: 100%;
-            background: #22c55e;
-            width: 0%;
-        }
-
-        .ai-box {
-            margin-top: 10px;
-        }
-    </style>
 </head>
+<body style="text-align:center; font-family:Arial;">
 
-<body>
+    <h2>Animal Disease Detection</h2>
 
-<div class="container">
-    <h2>AI Animal Disease Detector</h2>
+    <input type="file" id="imageInput">
+    <br><br>
+    <button onclick="uploadImage()">Predict</button>
 
-    <div class="drop-zone" id="dropZone">
-        Paste (Ctrl+V) or Drag Image
-    </div>
+    <h3 id="result"></h3>
 
-    <button onclick="sendImage()">Predict</button>
+    <script>
+        function uploadImage() {
+            let fileInput = document.getElementById("imageInput");
 
-    <img id="preview">
+            if (fileInput.files.length === 0) {
+                alert("Please select an image");
+                return;
+            }
 
-    <div class="result-card" id="resultCard">
-        <h3 id="result"></h3>
-        <p id="desc"></p>
+            let formData = new FormData();
+            formData.append("image", fileInput.files[0]);
 
-        <div class="progress-bar">
-            <div class="progress" id="progress"></div>
-        </div>
-
-        <p id="percentText"></p>
-
-        <div class="ai-box">
-            <b>AI Suggestion:</b>
-            <p id="aiAdvice"></p>
-        </div>
-    </div>
-</div>
-
-<script>
-let selectedFile = null;
-
-const preview = document.getElementById("preview");
-const dropZone = document.getElementById("dropZone");
-
-// Paste
-document.addEventListener("paste", (e) => {
-    const items = e.clipboardData.items;
-    for (let item of items) {
-        if (item.type.includes("image")) {
-            selectedFile = item.getAsFile();
-            showPreview(selectedFile);
+            fetch("/predict", {   // ✅ IMPORTANT (no localhost)
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert(data.error);
+                } else {
+                    document.getElementById("result").innerText =
+                        "Disease: " + data.infection +
+                        " | Confidence: " + (data.confidence * 100).toFixed(2) + "%" +
+                        "\n" + data.description;
+                }
+            })
+            .catch(error => {
+                alert("Error connecting to server");
+                console.error(error);
+            });
         }
-    }
-});
-
-// Drag
-dropZone.addEventListener("dragover", e => e.preventDefault());
-
-dropZone.addEventListener("drop", e => {
-    e.preventDefault();
-    selectedFile = e.dataTransfer.files[0];
-    showPreview(selectedFile);
-});
-
-function showPreview(file) {
-    preview.src = URL.createObjectURL(file);
-    preview.style.display = "block";
-}
-
-function sendImage() {
-    if (!selectedFile) {
-        alert("Upload image first");
-        return;
-    }
-
-    let formData = new FormData();
-    formData.append("image", selectedFile);
-
-    fetch("/predict", {
-        method: "POST",
-        body: formData
-    })
-    .then(res => res.json())
-    .then(data => {
-        document.getElementById("result").innerText =
-            "Infection: " + data.infection;
-
-        document.getElementById("desc").innerText =
-            data.description;
-
-        let confidence = (data.confidence * 100).toFixed(2);
-
-        document.getElementById("progress").style.width = confidence + "%";
-        document.getElementById("percentText").innerText =
-            "Confidence: " + confidence + "%";
-
-        document.getElementById("aiAdvice").innerText =
-            data.advice || "No advice";
-
-        document.getElementById("resultCard").style.display = "block";
-    })
-    .catch(err => {
-        console.error(err);
-        alert("Error connecting to server");
-    });
-}
-</script>
+    </script>
 
 </body>
 </html>
