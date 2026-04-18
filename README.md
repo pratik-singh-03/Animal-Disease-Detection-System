@@ -1,8 +1,10 @@
-# Animal Disease Detection System
+# Animal Disease Detection System Version: "0.1"
 
 ## Overview
 
 This project is a web-based application designed to detect common animal skin conditions through image input. Users can upload an image, and the system analyzes it to identify possible issues and provide basic information.
+
+This website provides approximate predictions based on trained data. The results are generally accurate, as verified through consultation with a doctor. In testing, around 20 out of 30 images were correctly identified, while the remaining cases showed similar symptoms.
 
 The application is built to assist in early awareness and help users understand potential animal health problems.
 
